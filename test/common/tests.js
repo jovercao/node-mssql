@@ -1814,7 +1814,7 @@ module.exports = (sql, driver) => {
 
     '@Connection from pool' (done) {
       const connection = new TestConnection()
-      connection.open().then(() => {
+      connection.connect().then(() => {
         return connection.query('select a, b, c from tvp_test')
       }).then(result => {
         return connection.close()
@@ -1828,7 +1828,7 @@ module.exports = (sql, driver) => {
     '@Connection from config' (done) {
       const config = readConfig()
       const connection = new TestConnection(config)
-      connection.open().then(() => {
+      connection.connect().then(() => {
         return connection.query('select a, b, c from tvp_test')
       }).then(result => {
         return connection.close()
@@ -1842,7 +1842,7 @@ module.exports = (sql, driver) => {
     '@Connection transaction commit' (done) {
       const connection = new TestConnection()
       const trans = connection.transaction()
-      connection.open().then(() => {
+      connection.connect().then(() => {
         return trans.begin()
       }).then(() => {
         return new sql.Request(trans).query('select a, b, c from tvp_test')
@@ -1860,7 +1860,7 @@ module.exports = (sql, driver) => {
     '@Connection transaction rollback' (done) {
       const connection = new TestConnection()
       const trans = connection.transaction()
-      connection.open().then(() => {
+      connection.connect().then(() => {
         return trans.begin()
       }).then(() => {
         new sql.Request(trans).query('select a, b, c from tvp_test')
