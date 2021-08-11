@@ -1839,7 +1839,7 @@ module.exports = (sql, driver) => {
       })
     },
 
-    '@Connection transaction commit' (done) {
+    '@Connection with transaction commit' (done) {
       const connection = new TestConnection()
       const trans = connection.transaction()
       connection.connect().then(() => {
@@ -1857,13 +1857,13 @@ module.exports = (sql, driver) => {
       })
     },
 
-    '@Connection transaction rollback' (done) {
+    '@Connection with transaction rollback' (done) {
       const connection = new TestConnection()
       const trans = connection.transaction()
       connection.connect().then(() => {
         return trans.begin()
       }).then(() => {
-        new sql.Request(trans).query('select a, b, c from tvp_test')
+        return new sql.Request(trans).query('select a, b, c from tvp_test')
       }).then(result => {
         return trans.rollback()
       }).then(() => {
@@ -1873,41 +1873,41 @@ module.exports = (sql, driver) => {
       }).catch((err) => {
         done(err)
       })
+    },
+
+    '@Connection commit transaction selfly' (done) {
+      const connection = new TestConnection()
+      connection.open().then(() => {
+        return connection.beginTrans()
+      }).then(() => {
+        return connection.query('select a, b, c from tvp_test')
+      }).then(result => {
+        return connection.commit()
+      }).then(() => {
+        return connection.close()
+      }).then(() => {
+        done()
+      }).catch((err) => {
+        done(err)
+      })
+    },
+
+    '@Connection rollback transaction selfly' (done) {
+      const connection = new TestConnection()
+      connection.open().then(() => {
+        return connection.beginTrans()
+      }).then(() => {
+        return connection.query('select a, b, c from tvp_test')
+      }).then(result => {
+        return connection.rollback()
+      }).then(() => {
+        return connection.close()
+      }).then(() => {
+        done()
+      }).catch((err) => {
+        done(err)
+      })
     }
-
-    // '@Connection transaction commit' (done) {
-    //   const connection = new TestConnection()
-    //   connection.open().then(() => {
-    //     return connection.beginTrans()
-    //   }).then(() => {
-    //     return connection.query('select a, b, c from tvp_test')
-    //   }).then(result => {
-    //     return connection.commit()
-    //   }).then(() => {
-    //     return connection.close()
-    //   }).then(() => {
-    //     done()
-    //   }).catch((err) => {
-    //     done(err)
-    //   })
-    // },
-
-    // '@Connection transaction rollback' (done) {
-    //   const connection = new TestConnection()
-    //   connection.open().then(() => {
-    //     return connection.beginTrans()
-    //   }).then(() => {
-    //     return connection.query('select a, b, c from tvp_test')
-    //   }).then(result => {
-    //     return connection.rollback()
-    //   }).then(() => {
-    //     return connection.close()
-    //   }).then(() => {
-    //     done()
-    //   }).catch((err) => {
-    //     done(err)
-    //   })
-    // }
   }
 }
 

@@ -107,8 +107,10 @@ describe('tedious', () => {
     it('chunked xml support', done => TESTS['chunked xml support'](done))
     it('@Connection from pool', done => TESTS['@Connection from pool'](done))
     it('@Connection from config', done => TESTS['@Connection from config'](done))
-    it('@Connection transaction commit', done => TESTS['@Connection transaction commit'](done))
-    it('@Connection transaction rollback', done => TESTS['@Connection transaction rollback'](done))
+    it('@Connection with transaction commit', done => TESTS['@Connection with transaction commit'](done))
+    it('@Connection with transaction rollback', done => TESTS['@Connection with transaction rollback'](done))
+    it('@Connection commit transaction selfly', done => TESTS['@Connection commit transaction selfly'](done))
+    it('@Connection rollback transaction selfly', done => TESTS['@Connection rollback transaction selfly'](done))
     after(done => sql.close(done))
   })
 
