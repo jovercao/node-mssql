@@ -571,7 +571,7 @@ export interface IConnection {
 }
 
 export interface Connection extends IConnection, events.EventEmitter {
-  readonly opened: boolean;
+  // readonly opened: boolean;
   readonly inTransaction: boolean;
   open(): Promise<void>;
 
